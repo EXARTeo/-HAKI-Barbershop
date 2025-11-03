@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="el">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HAKI Barbershop — Κλείσε Ραντεβού</title>
+
+    <!-- Cal.com embed CSS & JS -->
+    <link rel="stylesheet" href="https://app.cal.com/embed/embed.css" />
+    <script src="https://app.cal.com/embed/embed.js" async></script>
+    <script>
+      // Cal embed queue
+      window.Cal = window.Cal || function () { (Cal.q = Cal.q || []).push(arguments); };
+    </script>
+
+    <style>
+      :root { color-scheme: light dark; }
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; }
+      header { padding: 24px; display: flex; gap: 16px; align-items: center; justify-content: space-between; }
+      .brand { font-weight: 700; font-size: 20px; }
+      .container { max-width: 1000px; margin: 0 auto; padding: 0 16px 48px; }
+      #cal-inline { min-height: 720px; } /* ύψος για να χωράει όλο το widget */
+      .btn {
+        border: 1px solid currentColor; padding: 10px 14px; border-radius: 12px; cursor: pointer;
+        background: transparent; font-weight: 600;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="container">
+      <div class="brand">HAKI Barbershop</div>
+      <!-- Προαιρετικό: κουμπί που ανοίγει το booking ως pop-up -->
+      <button id="open-booking" class="btn">Κλείσε ραντεβού (Pop-up)</button>
+    </header>
+
+    <main class="container">
+      <h1>Κλείσε ραντεβού</h1>
+      <p>Διάλεξε υπηρεσία, ημέρα και ώρα. Θα λάβεις άμεσα επιβεβαίωση.</p>
+
+      <!-- Εδώ θα φορτώσει το inline calendar -->
+      <div id="cal-inline"></div>
+    </main>
+
+    <script>
+      // 1) Αρχικοποίηση embed (Cloud origin)
+      Cal("init", { origin: "https://app.cal.com" }); // για self-hosted άλλαξε το origin στη δική σου εγκατάσταση. :contentReference[oaicite:1]{index=1}
+
+      // 2) Inline calendar μέσα στο #cal-inline
+      Cal("inline", {
+        elementOrSelector: "#cal-inline",
+        // 👇 ΒΑΛΕ εδώ το δικό σου link: username/event-type (π.χ. haki-barbers/haircut-30min)
+        calLink: "haki-barbers/haircut-30min"
+      }); // inline οδηγίες embed. :contentReference[oaicite:2]{index=2}
+
+      // 3) UI ρυθμίσεις (προαιρετικές)
+      Cal("ui", {
+        theme: "light",                   // ή "dark"
+        layout: "month_view",             // "month_view" ή "week_view"
+        styles: {                         // ελαφρύ branding
+          branding: { brandColor: "#111" }
+        }
+      }); // βασικές UI οδηγίες. :contentReference[oaicite:3]{index=3}
+
+      // 4) Pop-up άνοιγμα από custom κουμπί (προαιρετικό)
+      document.getElementById("open-booking").addEventListener("click", function () {
+        Cal("preload", { calLink: "your-username/your-event-type" });
+        Cal("showPopup", { calLink: "your-username/your-event-type" });
+      }); // trigger via element click. :contentReference[oaicite:4]{index=4}
+    </script>
+  </body>
+</html>
